@@ -62,9 +62,3 @@ jobs:
           else
             echo "❌ 访问 海报接口 2 失败 (https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9)，状态码: $STATUS_CODE_HAIBAO2"
           fi
-
-      - name: Post Checkout repository
-        # ... (如果您有 Post Checkout repository 步骤，保持不变)
-
-      - name: Complete job
-        # ... (如果您有 Complete job 步骤，保持不变)
