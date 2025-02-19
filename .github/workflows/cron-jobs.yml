@@ -1,27 +1,26 @@
-name: Scheduled Tasks
+name: Scheduled Web Requests # Workflow 的名称，可以自定义
 
 on:
-  # 每半小时触发一次
   schedule:
-    - cron: "*/30 * * * *"
-  
-  # 每天 UTC 时间 0:00（北京时间 8:00）触发一次
-  schedule:
-    - cron: "0 0 * * *"
+    - cron: '*/30 * * * *' # 每半小时运行一次
+    - cron: '0 0 * * *'    # 每天 UTC 时间 00:00 运行一次 (即每天的午夜)
 
 jobs:
-  half-hourly:
-    if: contains(github.event.schedule, '*/30')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Request URL 1
-        run: curl -sS "https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy"
-      - name: Request URL 2
-        run: curl -sS "https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa"
+  call-urls:
+    runs-on: ubuntu-latest # 运行在 Ubuntu 最新版本的虚拟机上
 
-  daily:
-    if: contains(github.event.schedule, '0 0')
-    runs-on: ubuntu-latest
     steps:
-      - name: Make daily request
-        run: curl -sS "https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9"
+      - name: 每半小时访问 - ziyuanku
+        run: curl http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku
+
+      - name: 每天访问 - haibao (you.anneng.ggff.net)
+        run: curl http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9
+
+      - name: 每半小时访问 - hongniuzy
+        run: curl https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy
+
+      - name: 每半小时访问 - aa
+        run: curl https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa
+
+      - name: 每天访问 - haibao (ane.anneng.ggff.net)
+        run: curl https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9
