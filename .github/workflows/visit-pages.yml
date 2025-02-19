@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Access webpage every half hour
-        if: github.event.schedule != null && github.event.schedule == '*/30 * * * *'
+        if: github.event.schedule != null  # 简化 if 条件，只判断 github.event.schedule 是否不为空
         run: |
           # 访问第一个网址并检查状态码
           STATUS_CODE_ZIYUANKU=$(curl -s -w "%{http_code}" "http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku" -o /dev/null)
@@ -45,7 +45,7 @@ jobs:
 
 
       - name: Access webpage once a day
-        if: github.event.schedule != null && github.event.schedule == '0 0 * * *'
+        if: github.event.schedule != null  # 简化 if 条件，只判断 github.event.schedule 是否不为空
         run: |
           # 访问第一个网址并检查状态码
           STATUS_CODE_HAIBAO1=$(curl -s -w "%{http_code}" "http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9" -o /dev/null)
