@@ -17,55 +17,43 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Access webpage every half hour
-        if: github.event.schedule != null
         run: |
-          # 访问第一个网址并检查状态码
-          STATUS_CODE_ZIYUANKU=$(curl -s -w "%{http_code}" "http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku" -o /dev/null)
-          if [ "$STATUS_CODE_ZIYUANKU" -eq "200" ]; then
-            echo "✅ 成功访问 ziyuanku 接口 (http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku)，状态码: $STATUS_CODE_ZIYUANKU"
-          else
-            echo "❌ 访问 ziyuanku 接口失败 (http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku)，状态码: $STATUS_CODE_ZIYUANKU"
-          fi
+          # 定义半小时检查的 URL 数组
+          declare -A HALF_HOURLY_URLS
+          HALF_HOURLY_URLS=(
+            ["ziyuanku"]="http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku"
+            ["hongniuzy"]="https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy"
+            ["aa"]="https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa"
+            ["bing522"]="https://bing522.serv00.net/api.php/timming/index.html?enforce=1&name=aa"
+          )
 
-          # 访问第二个网址并检查状态码
-          STATUS_CODE_HONGNIUZY=$(curl -s -w "%{http_code}" "https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy" -o /dev/null)
-          if [ "$STATUS_CODE_HONGNIUZY" -eq "200" ]; then
-            echo "✅ 成功访问 hongniuzy 接口 (https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy)，状态码: $STATUS_CODE_HONGNIUZY"
-          else
-            echo "❌ 访问 hongniuzy 接口失败 (https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy)，状态码: $STATUS_CODE_HONGNIUZY"
-          fi
-
-          # 访问第三个网址并检查状态码
-          STATUS_CODE_AA=$(curl -s -w "%{http_code}" "https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa" -o /dev/null)
-          if [ "$STATUS_CODE_AA" -eq "200" ]; then
-            echo "✅ 成功访问 aa 接口 (https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa)，状态码: $STATUS_CODE_AA"
-          else
-            echo "❌ 访问 aa 接口失败 (https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa)，状态码: $STATUS_CODE_AA"
-          fi
-
-          # 访问第四个网址并检查状态码（新增）
-          STATUS_CODE_BING522=$(curl -s -w "%{http_code}" "https://bing522.serv00.net/api.php/timming/index.html?enforce=1&name=aa" -o /dev/null)
-          if [ "$STATUS_CODE_BING522" -eq "200" ]; then
-            echo "✅ 成功访问 bing522 接口 (https://bing522.serv00.net/api.php/timming/index.html?enforce=1&name=aa)，状态码: $STATUS_CODE_BING522"
-          else
-            echo "❌ 访问 bing522 接口失败 (https://bing522.serv00.net/api.php/timming/index.html?enforce=1&name=aa)，状态码: $STATUS_CODE_BING522"
-          fi
+          # 遍历并检查每个 URL
+          for name in "${!HALF_HOURLY_URLS[@]}"; do
+            url="${HALF_HOURLY_URLS[$name]}"
+            STATUS_CODE=$(curl -s -w "%{http_code}" "$url" -o /dev/null)
+            if [ "$STATUS_CODE" -eq "200" ]; then
+              echo "✅ 成功访问 $name 接口 ($url)，状态码: $STATUS_CODE"
+            else
+              echo "❌ 访问 $name 接口失败 ($url)，状态码: $STATUS_CODE"
+            fi
+          done
 
       - name: Access webpage once a day
-        if: github.event.schedule != null
         run: |
-          # 访问第一个网址并检查状态码
-          STATUS_CODE_HAIBAO1=$(curl -s -w "%{http_code}" "http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9" -o /dev/null)
-          if [ "$STATUS_CODE_HAIBAO1" -eq "200" ]; then
-            echo "✅ 成功访问 海报接口 1 (http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9)，状态码: $STATUS_CODE_HAIBAO1"
-          else
-            echo "❌ 访问 海报接口 1 失败 (http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9)，状态码: $STATUS_CODE_HAIBAO1"
-          fi
+          # 定义每天检查的 URL 数组
+          declare -A DAILY_URLS
+          DAILY_URLS=(
+            ["haibao1"]="http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9"
+            ["haibao2"]="https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9"
+          )
 
-          # 访问第二个网址并检查状态码
-          STATUS_CODE_HAIBAO2=$(curl -s -w "%{http_code}" "https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9" -o /dev/null)
-          if [ "$STATUS_CODE_HAIBAO2" -eq "200" ]; then
-            echo "✅ 成功访问 海报接口 2 (https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9)，状态码: $STATUS_CODE_HAIBAO2"
-          else
-            echo "❌ 访问 海报接口 2 失败 (https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9)，状态码: $STATUS_CODE_HAIBAO2"
-          fi
+          # 遍历并检查每个 URL
+          for name in "${!DAILY_URLS[@]}"; do
+            url="${DAILY_URLS[$name]}"
+            STATUS_CODE=$(curl -s -w "%{http_code}" "$url" -o /dev/null)
+            if [ "$STATUS_CODE" -eq "200" ]; then
+              echo "✅ 成功访问 $name 接口 ($url)，状态码: $STATUS_CODE"
+            else
+              echo "❌ 访问 $name 接口失败 ($url)，状态码: $STATUS_CODE"
+            fi
+          done
