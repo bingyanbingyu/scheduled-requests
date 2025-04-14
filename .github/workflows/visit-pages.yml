@@ -42,7 +42,7 @@ jobs:
           # 定义每天检查的 URL 数组
           declare -A DAILY_URLS
           DAILY_URLS=(
-            ["haibao1"]="http://b.you.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9"
+            
             ["haibao2"]="https://ane.anneng.ggff.net/bbj/haibao.php?cmsname=maccms10&bbjtype=hot&codetype=php&filtercondi=doubanid&orderby=ASC&num=10&level=9"
           )
 
