@@ -21,7 +21,6 @@ jobs:
           # 定义半小时检查的 URL 数组
           declare -A HALF_HOURLY_URLS
           HALF_HOURLY_URLS=(
-            ["ziyuanku"]="http://b.you.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=ziyuanku"
             ["hongniuzy"]="https://ane.anneng.ggff.net/api.php/timming/index.html?enforce=1&name=hongniuzy"
             ["aa"]="https://dy.wangzhetq.asia/api.php/timming/index.html?enforce=1&name=aa"
             ["bing522"]="https://bing522.serv00.net/api.php/timming/index.html?enforce=1&name=aa"
